@@ -1,0 +1,94 @@
+@import "tailwindcss";
+@import "@xterm/xterm/css/xterm.css";
+
+@theme {
+  --color-bg: #08090c;
+  --color-panel: #0e1116;
+  --color-panel-2: #131720;
+  --color-raised: #1a1f2a;
+  --color-line: #222834;
+  --color-line-strong: #2e3542;
+  --color-text: #dce2ea;
+  --color-muted: #8591a1;
+  --color-faint: #5b6574;
+  --color-accent: #3ee6a8;
+  --color-accent-dim: #1f7a5b;
+  --color-warn: #f5b841;
+  --color-danger: #ff6b6b;
+  --color-info: #6cb6ff;
+
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "Cascadia Mono", Menlo, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+/* Quiet scrollbars that match the chrome */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* xterm fills its container; padding lives on the wrapper */
+.terminal-host .xterm {
+  height: 100%;
+}
+/* xterm paints #000 under the partial last row; let the theme colour on the host show instead */
+.terminal-host .xterm .xterm-viewport,
+.terminal-host .xterm .xterm-scrollable-element {
+  background-color: transparent !important;
+}
+
+/* Landing page backdrop: faint grid that fades out */
+.grid-backdrop {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.cursor-blink {
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+.progress-indeterminate {
+  animation: indeterminate 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blink,
+  .progress-indeterminate {
+    animation: none;
+  }
+}
